@@ -1,0 +1,209 @@
+:root {
+    --header: #636363;
+    --border: #4d4d4d;
+    --bg: #f7f7f7;
+
+    /* JS 연동용 기본 컬러 풀백 */
+    --otp: #ffd8df;
+    --good: #ffe9c8;
+    --normal: #fff9cd;
+    --pass: #e4f9dc;
+    --mine: #d9f8ff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    font-family: Pretendard, "Noto Sans KR", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px; /* 상하 여백 살짝 축소 */
+}
+
+.container {
+    width: min(720px, 95vw); /* 전체 컨테이너 최대 크기를 줄여 아담하게 변경 */
+    text-align: center;
+}
+
+h1 {
+    font-size: 28px; /* 기존 36px -> 28px로 축소 */
+    margin-bottom: 24px;
+    font-weight: 700;
+}
+
+/* ------------------------
+   범례 (Legend)
+-------------------------*/
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 아담한 배치 처리를 위해 간격 축소 */
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px; /* 기존 20px -> 16px로 축소 */
+}
+
+.legend-color {
+    width: 24px; /* 기존 28px -> 24px로 축소 */
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,.08);
+}
+
+/* ------------------------
+   테이블 (PC 크기 전체 축소 + 버그 차단)
+-------------------------*/
+.table-wrapper {
+    display: inline-block;
+    border-radius: 12px; /* 라운드 15px -> 12px로 슬림화 */
+    overflow: hidden;
+    border: 1px solid var(--border); /* 요청하신 1px 테두리 두께 조절 */
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+table {
+    border-collapse: collapse; /* 한 판으로 끈끈하게 결합하여 분리 현상 방지 */
+    width: 100%;
+}
+
+th {
+    width: 100px; /* 기존 132px -> 100px로 대폭 축소 */
+    height: 64px; /* 기존 88px -> 64px로 축소 */
+    background: var(--header);
+    color: white;
+    border: 1px solid var(--border);
+    font-size: 18px; /* 기존 26px -> 18px로 축소 */
+    font-weight: 600;
+}
+
+td {
+    width: 100px; /* 기존 132px -> 100px로 대폭 축소 */
+    height: 64px; /* 기존 88px -> 64px로 축소 */
+    background: white;
+    border: 1px solid var(--border);
+    text-align: center;
+    font-size: 16px; /* 기존 24px -> 16px로 축소 */
+    cursor: pointer;
+    user-select: none;
+    transition: background .15s; /* 테두리를 무너뜨리는 transform 속성 완전 제거 */
+}
+
+/* 칸 분리 버그를 만드는 scale 애니메이션 대신, 세련된 반투명 딤 처리로 교체 */
+td:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+td.disabled {
+    background: #fafafa;
+    cursor: default;
+}
+
+td.disabled:hover {
+    background: #fafafa;
+}
+
+/* [★ 중요 개조] 고정 클래스 매칭 스타일 삭제! 
+  JS에서 자유로운 추가/변경(style.backgroundColor) 처리를 하므로 
+  CSS에서는 별도의 하드코딩된 선택자를 선언하지 않아도 완벽 작동합니다.
+*/
+
+/* ------------------------
+   팝업 (Picker)
+-------------------------*/
+#picker {
+    position: absolute;
+    display: none;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 40px;
+    background: white;
+    box-shadow: 0 15px 35px rgba(0,0,0,.15);
+    z-index: 999;
+}
+
+.pick {
+    width: 28px; /* 기존 34px -> 28px로 축소 */
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .15s;
+    border: 1px solid rgba(0,0,0,0.1); /* 밝은 커스텀 색상 구분을 위한 연한 테두리 */
+}
+
+.pick:hover {
+    transform: scale(1.15);
+}
+
+.pick.clear {
+    background: white;
+    border: 2px solid #cfcfcf;
+    position: relative;
+}
+
+.pick.clear::before {
+    content: "×";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #999;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* ------------------------
+   모바일 반응형 (어긋남 100% 원천 차단)
+-------------------------*/
+@media(max-width: 900px) {
+    body {
+        padding: 15px 5px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    /* 겉 감싸는 영역과 내부 표 레이아웃 강제 동기화 */
+    .table-wrapper {
+        width: 100% !important;
+        display: block !important;
+        border-radius: 10px;
+    }
+
+    table {
+        width: 100% !important;
+        table-layout: fixed !important; /* 6개 열이 기기 가로폭에 맞춰 균등 배분되도록 처리 */
+    }
+
+    th, td {
+        width: calc(100% / 6) !important; /* 정확하게 화면 폭을 6등분하여 어긋남 여백 제거 */
+        height: 48px !important; /* 기존 58px -> 48px로 더 슬림하게 축소 */
+        font-size: 13px !important; /* 기존 15px -> 13px로 조절 */
+        border: 1px solid var(--border) !important;
+    }
+
+    td:hover {
+        background-color: transparent; /* 모바일 터치 시 호버 배경 찌꺼기 제거 */
+    }
+
+    .legend {
+        gap: 12px;
+    }
+
+    .legend-item {
+        font-size: 13px;
+    }
+}
