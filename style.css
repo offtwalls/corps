@@ -3,7 +3,6 @@
     --border: #4d4d4d;
     --bg: #f7f7f7;
 
-    /* JS 연동용 기본 컬러 풀백 */
     --otp: #ffd8df;
     --good: #ffe9c8;
     --normal: #fff9cd;
@@ -26,12 +25,12 @@ body {
 }
 
 .container {
-    width: min(720px, 95vw); /* 전체 컨테이너 최대 크기를 줄여 아담하게 변경 */
+    width: min(720px, 95vw); /* 전체 컨테이너 최대 크기를 줄임 */
     text-align: center;
 }
 
 h1 {
-    font-size: 28px; /* 기존 36px -> 28px로 축소 */
+    font-size: 28px; /* 타이틀 크기 축소 */
     margin-bottom: 24px;
     font-weight: 700;
 }
@@ -42,7 +41,7 @@ h1 {
 .legend {
     display: flex;
     justify-content: center;
-    gap: 20px; /* 아담한 배치 처리를 위해 간격 축소 */
+    gap: 20px; /* 범례 간격 축소 */
     flex-wrap: wrap;
     margin-bottom: 24px;
 }
@@ -51,30 +50,28 @@ h1 {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 16px; /* 기존 20px -> 16px로 축소 */
-}
-
-.legend-color {
-    width: 24px; /* 기존 28px -> 24px로 축소 */
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid rgba(0,0,0,.08);
+    font-size: 16px; /* 범례 폰트 크기 축소 */
 }
 
 /* ------------------------
-   테이블 (PC 크기 전체 축소 + 버그 차단)
+   테이블 (PC 기준 크기 전체 축소)
 -------------------------*/
 .table-wrapper {
     display: inline-block;
-    border-radius: 12px; /* 라운드 15px -> 12px로 슬림화 */
+    border-radius: 12px; /* 라운드 반경 */
     overflow: hidden;
-    border: 1px solid var(--border); /* 요청하신 1px 테두리 두께 조절 */
+    border: 1px solid var(--border);
     background: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+
+    /* ===== [추가] 모바일 기기 모서리 뚫림/잘림 버그 해결 ===== */
+    transform: translateZ(0);
+    will-change: transform;
 }
 
+
 table {
-    border-collapse: collapse; /* 한 판으로 끈끈하게 결합하여 분리 현상 방지 */
+    border-collapse: collapse; /* 칸 결합 고정 */
     width: 100%;
 }
 
@@ -84,7 +81,7 @@ th {
     background: var(--header);
     color: white;
     border: 1px solid var(--border);
-    font-size: 18px; /* 기존 26px -> 18px로 축소 */
+    font-size: 18px; /* 폰트 크기 축소 */
     font-weight: 600;
 }
 
@@ -94,13 +91,12 @@ td {
     background: white;
     border: 1px solid var(--border);
     text-align: center;
-    font-size: 16px; /* 기존 24px -> 16px로 축소 */
+    font-size: 16px; /* 폰트 크기 축소 */
     cursor: pointer;
     user-select: none;
-    transition: background .15s; /* 테두리를 무너뜨리는 transform 속성 완전 제거 */
+    transition: background .15s;
 }
 
-/* 칸 분리 버그를 만드는 scale 애니메이션 대신, 세련된 반투명 딤 처리로 교체 */
 td:hover {
     background-color: rgba(0, 0, 0, 0.04);
 }
@@ -110,14 +106,30 @@ td.disabled {
     cursor: default;
 }
 
-td.disabled:hover {
-    background: #fafafa;
+/* 선택 색 클래스 */
+td.otp    { background: var(--otp) !important; }
+td.good   { background: var(--good) !important; }
+td.normal { background: var(--normal) !important; }
+td.pass   { background: var(--pass) !important; }
+td.mine   { background: var(--mine) !important; }
+
+/* 기기존 개별 설정 하단 혹은 적당한 위치에 추가 */
+.legend-add-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* [★ 중요 개조] 고정 클래스 매칭 스타일 삭제! 
-  JS에서 자유로운 추가/변경(style.backgroundColor) 처리를 하므로 
-  CSS에서는 별도의 하드코딩된 선택자를 선언하지 않아도 완벽 작동합니다.
-*/
+/* [중요] 추가된 커스텀 범례들이 스타일 변수를 동적으로 추적하여 배경색을 주입받도록 처리 */
+td[class*="custom_"] {
+    background: var(--data-color, white) !important;
+}
+
+/* JavaScript에서 매칭하기 수월하도록 동적 생성 클래스 지원 */
+.pick {
+    background: var(--bg-color, #ccc);
+}
+
 
 /* ------------------------
    팝업 (Picker)
@@ -129,23 +141,28 @@ td.disabled:hover {
     padding: 10px;
     border-radius: 40px;
     background: white;
-    box-shadow: 0 15px 35px rgba(0,0,0,.15);
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
     z-index: 999;
 }
 
 .pick {
-    width: 28px; /* 기존 34px -> 28px로 축소 */
+    width: 28px; /* 픽커 크기 아담하게 축소 */
     height: 28px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     transition: .15s;
-    border: 1px solid rgba(0,0,0,0.1); /* 밝은 커스텀 색상 구분을 위한 연한 테두리 */
 }
 
 .pick:hover {
     transform: scale(1.15);
 }
+
+.pick.otp    { background: var(--otp); }
+.pick.good   { background: var(--good); }
+.pick.normal { background: var(--normal); }
+.pick.pass   { background: var(--pass); }
+.pick.mine   { background: var(--mine); }
 
 .pick.clear {
     background: white;
@@ -165,7 +182,7 @@ td.disabled:hover {
 }
 
 /* ------------------------
-   모바일 반응형 (어긋남 100% 원천 차단)
+   모바일 반응형 (테두리 어긋남 완전 해결)
 -------------------------*/
 @media(max-width: 900px) {
     body {
@@ -176,27 +193,27 @@ td.disabled:hover {
         font-size: 22px;
     }
 
-    /* 겉 감싸는 영역과 내부 표 레이아웃 강제 동기화 */
+    /* 겉 박스와 내부 표가 무조건 100% 동일하게 일치하도록 강제 결합 */
     .table-wrapper {
         width: 100% !important;
-        display: block !important;
+        display: block !important; 
         border-radius: 10px;
     }
 
     table {
         width: 100% !important;
-        table-layout: fixed !important; /* 6개 열이 기기 가로폭에 맞춰 균등 배분되도록 처리 */
+        table-layout: fixed !important; /* 6개 열이 화면 비율에 맞춰 쪼개지도록 설정 */
     }
 
     th, td {
-        width: calc(100% / 6) !important; /* 정확하게 화면 폭을 6등분하여 어긋남 여백 제거 */
-        height: 48px !important; /* 기존 58px -> 48px로 더 슬림하게 축소 */
-        font-size: 13px !important; /* 기존 15px -> 13px로 조절 */
+        width: calc(100% / 6) !important; /* 화면 가로폭을 정확히 6등분하여 채움 */
+        height: 48px !important; /* 모바일 전용 아담한 높이 */
+        font-size: 13px !important; /* 모바일용 가독성 좋은 크기 */
         border: 1px solid var(--border) !important;
     }
 
     td:hover {
-        background-color: transparent; /* 모바일 터치 시 호버 배경 찌꺼기 제거 */
+        background-color: transparent;
     }
 
     .legend {
