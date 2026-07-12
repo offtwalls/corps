@@ -1,294 +1,80 @@
-:root{
-    --header:#636363;
-    --border:#4d4d4d;
-    --bg:#f7f7f7;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORTIS RPS 취향표</title>
 
-    --otp:#ffd8df;
-    --good:#ffe9c8;
-    --normal:#fff9cd;
-    --pass:#e4f9dc;
-    --mine:#d9f8ff;
-}
+    <link rel="stylesheet" href="style.css">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
 
-body{
+<body>
 
-    background:var(--bg);
-    font-family:
-    Pretendard,
-    "Noto Sans KR",
-    sans-serif;
+<div class="container">
 
-    display:flex;
-    justify-content:center;
-    padding:40px;
+    <h1>CORTIS RPS 취향표</h1>
 
-}
+    <div class="legend">
 
-.container{
+        <div class="legend-item">
+            <span class="legend-color otp"></span>
+            OTP
+        </div>
 
-    width:min(900px,95vw);
-    text-align:center;
+        <div class="legend-item">
+            <span class="legend-color good"></span>
+            좋음
+        </div>
 
-}
+        <div class="legend-item">
+            <span class="legend-color normal"></span>
+            보통
+        </div>
 
-h1{
+        <div class="legend-item">
+            <span class="legend-color pass"></span>
+            스루
+        </div>
 
-    font-size:36px;
-    margin-bottom:30px;
-    font-weight:700;
+        <div class="legend-item">
+            <span class="legend-color mine"></span>
+            지뢰
+        </div>
 
-}
+    </div>
 
-.legend{
+    <div class="table-wrapper">
 
-    display:flex;
-    justify-content:center;
-    gap:28px;
-    flex-wrap:wrap;
+        <table id="rpsTable"></table>
 
-    margin-bottom:30px;
+    </div>
 
-}
+</div>
 
-.legend-item{
 
-    display:flex;
-    align-items:center;
-    gap:8px;
+<!-- 색상 선택 팝업 -->
 
-    font-size:20px;
+<div id="picker">
 
-}
+    <button class="pick otp" data-color="otp"></button>
 
-.legend-color{
+    <button class="pick good" data-color="good"></button>
 
-    width:28px;
-    height:28px;
-    border-radius:50%;
+    <button class="pick normal" data-color="normal"></button>
 
-    border:2px solid rgba(0,0,0,.08);
+    <button class="pick pass" data-color="pass"></button>
 
-}
+    <button class="pick mine" data-color="mine"></button>
 
-.otp{background:var(--otp);}
-.good{background:var(--good);}
-.normal{background:var(--normal);}
-.pass{background:var(--pass);}
-.mine{background:var(--mine);}
+    <button class="pick clear" data-color=""></button>
 
-.table-wrapper{
+</div>
 
-    display:inline-block;
+<script src="script.js"></script>
 
-    border-radius:15px;
-    overflow:hidden;
-
-    border:1px solid var(--border);
-
-    background:white;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.08);
-
-}
-
-table{
-
-    border-collapse:collapse;
-
-}
-
-th{
-
-    width:132px;
-    height:88px;
-
-    background:var(--header);
-
-    color:white;
-
-    border:1px solid var(--border);
-
-    font-size:26px;
-    font-weight:600;
-
-}
-
-td{
-
-    width:132px;
-    height:88px;
-
-    background:white;
-
-    border:1px solid var(--border);
-
-    text-align:center;
-
-    font-size:24px;
-
-    cursor:pointer;
-
-    user-select:none;
-
-    transition:
-        background .18s,
-        transform .1s;
-
-}
-
-td:hover{
-
-    transform:scale(.98);
-
-}
-
-td.disabled{
-
-    background:#fafafa;
-    cursor:default;
-
-}
-
-/* 선택 색 */
-
-td.otp{
-
-    background:var(--otp);
-
-}
-
-td.good{
-
-    background:var(--good);
-
-}
-
-td.normal{
-
-    background:var(--normal);
-
-}
-
-td.pass{
-
-    background:var(--pass);
-
-}
-
-td.mine{
-
-    background:var(--mine);
-
-}
-
-/* 팝업 */
-
-#picker{
-
-    position:absolute;
-
-    display:none;
-
-    gap:10px;
-
-    padding:12px;
-
-    border-radius:40px;
-
-    background:white;
-
-    box-shadow:
-    0 15px 35px rgba(0,0,0,.15);
-
-    z-index:999;
-
-}
-
-.pick{
-
-    width:34px;
-    height:34px;
-
-    border:none;
-
-    border-radius:50%;
-
-    cursor:pointer;
-
-    transition:.15s;
-
-}
-
-.pick:hover{
-
-    transform:scale(1.15);
-
-}
-
-.pick.clear{
-
-    background:white;
-
-    border:2px solid #cfcfcf;
-
-    position:relative;
-
-}
-
-.pick.clear::before{
-
-    content:"×";
-
-    position:absolute;
-
-    inset:0;
-
-    display:grid;
-    place-items:center;
-
-    color:#999;
-
-    font-size:20px;
-
-    font-weight:bold;
-
-}
-
-@media(max-width:900px){
-
-    h1{
-
-        font-size:26px;
-
-    }
-
-    th,td{
-
-        width:74px;
-        height:58px;
-
-        font-size:15px;
-
-    }
-
-    .legend-item{
-
-        font-size:15px;
-
-    }
-
-    .legend-color{
-
-        width:20px;
-        height:20px;
-
-    }
-
-}
+</body>
+</html>
