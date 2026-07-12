@@ -1,0 +1,294 @@
+:root{
+    --header:#636363;
+    --border:#4d4d4d;
+    --bg:#f7f7f7;
+
+    --otp:#ffd8df;
+    --good:#ffe9c8;
+    --normal:#fff9cd;
+    --pass:#e4f9dc;
+    --mine:#d9f8ff;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:var(--bg);
+    font-family:
+    Pretendard,
+    "Noto Sans KR",
+    sans-serif;
+
+    display:flex;
+    justify-content:center;
+    padding:40px;
+
+}
+
+.container{
+
+    width:min(900px,95vw);
+    text-align:center;
+
+}
+
+h1{
+
+    font-size:36px;
+    margin-bottom:30px;
+    font-weight:700;
+
+}
+
+.legend{
+
+    display:flex;
+    justify-content:center;
+    gap:28px;
+    flex-wrap:wrap;
+
+    margin-bottom:30px;
+
+}
+
+.legend-item{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    font-size:20px;
+
+}
+
+.legend-color{
+
+    width:28px;
+    height:28px;
+    border-radius:50%;
+
+    border:2px solid rgba(0,0,0,.08);
+
+}
+
+.otp{background:var(--otp);}
+.good{background:var(--good);}
+.normal{background:var(--normal);}
+.pass{background:var(--pass);}
+.mine{background:var(--mine);}
+
+.table-wrapper{
+
+    display:inline-block;
+
+    border-radius:15px;
+    overflow:hidden;
+
+    border:1px solid var(--border);
+
+    background:white;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+table{
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    width:132px;
+    height:88px;
+
+    background:var(--header);
+
+    color:white;
+
+    border:1px solid var(--border);
+
+    font-size:26px;
+    font-weight:600;
+
+}
+
+td{
+
+    width:132px;
+    height:88px;
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    text-align:center;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    transition:
+        background .18s,
+        transform .1s;
+
+}
+
+td:hover{
+
+    transform:scale(.98);
+
+}
+
+td.disabled{
+
+    background:#fafafa;
+    cursor:default;
+
+}
+
+/* 선택 색 */
+
+td.otp{
+
+    background:var(--otp);
+
+}
+
+td.good{
+
+    background:var(--good);
+
+}
+
+td.normal{
+
+    background:var(--normal);
+
+}
+
+td.pass{
+
+    background:var(--pass);
+
+}
+
+td.mine{
+
+    background:var(--mine);
+
+}
+
+/* 팝업 */
+
+#picker{
+
+    position:absolute;
+
+    display:none;
+
+    gap:10px;
+
+    padding:12px;
+
+    border-radius:40px;
+
+    background:white;
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.15);
+
+    z-index:999;
+
+}
+
+.pick{
+
+    width:34px;
+    height:34px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    transition:.15s;
+
+}
+
+.pick:hover{
+
+    transform:scale(1.15);
+
+}
+
+.pick.clear{
+
+    background:white;
+
+    border:2px solid #cfcfcf;
+
+    position:relative;
+
+}
+
+.pick.clear::before{
+
+    content:"×";
+
+    position:absolute;
+
+    inset:0;
+
+    display:grid;
+    place-items:center;
+
+    color:#999;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+@media(max-width:900px){
+
+    h1{
+
+        font-size:26px;
+
+    }
+
+    th,td{
+
+        width:74px;
+        height:58px;
+
+        font-size:15px;
+
+    }
+
+    .legend-item{
+
+        font-size:15px;
+
+    }
+
+    .legend-color{
+
+        width:20px;
+        height:20px;
+
+    }
+
+}
