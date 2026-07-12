@@ -21,16 +21,16 @@ body {
     font-family: Pretendard, "Noto Sans KR", sans-serif;
     display: flex;
     justify-content: center;
-    padding: 30px 20px; /* 상하 여백 살짝 축소 */
+    padding: 30px 20px;
 }
 
 .container {
-    width: min(720px, 95vw); /* 전체 컨테이너 최대 크기를 줄임 */
+    width: min(720px, 95vw);
     text-align: center;
 }
 
 h1 {
-    font-size: 28px; /* 타이틀 크기 축소 */
+    font-size: 28px;
     margin-bottom: 24px;
     font-weight: 700;
 }
@@ -41,7 +41,7 @@ h1 {
 .legend {
     display: flex;
     justify-content: center;
-    gap: 20px; /* 범례 간격 축소 */
+    gap: 20px;
     flex-wrap: wrap;
     margin-bottom: 24px;
 }
@@ -50,48 +50,66 @@ h1 {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 16px; /* 범례 폰트 크기 축소 */
+    font-size: 16px;
+}
+
+.legend-add-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ------------------------
-   테이블 (PC 기준 크기 전체 축소)
+   테이블 (둥근 모서리 버그 완전 해결 버전)
 -------------------------*/
 .table-wrapper {
     display: inline-block;
-    border-radius: 12px; /* 라운드 반경 */
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--border);
     background: white;
     box-shadow: 0 8px 24px rgba(0,0,0,.06);
 
-    /* ===== [추가] 모바일 기기 모서리 뚫림/잘림 버그 해결 ===== */
+    /* 모바일 기기 모서리 뚫림/잘림 방지 하드웨어 가속 */
     transform: translateZ(0);
     will-change: transform;
 }
 
-
 table {
-    border-collapse: collapse; /* 칸 결합 고정 */
+    /* 기존 collapse 대신 separate를 사용해야 모서리가 깔끔하게 깎입니다 */
+    border-collapse: separate; 
+    border-spacing: 0;
     width: 100%;
 }
 
 th {
-    width: 100px; /* 기존 132px -> 100px로 대폭 축소 */
-    height: 64px; /* 기존 88px -> 64px로 축소 */
+    width: 100px;
+    height: 64px;
     background: var(--header);
     color: white;
-    border: 1px solid var(--border);
-    font-size: 18px; /* 폰트 크기 축소 */
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-size: 18px;
     font-weight: 600;
 }
 
+/* 테이블 가장 우측 테두리 중복 방지 */
+th:last-child, td:last-child {
+    border-right: none;
+}
+/* 테이블 가장 아래쪽 테두리 중복 방지 */
+tr:last-child th, tr:last-child td {
+    border-bottom: none;
+}
+
 td {
-    width: 100px; /* 기존 132px -> 100px로 대폭 축소 */
-    height: 64px; /* 기존 88px -> 64px로 축소 */
+    width: 100px;
+    height: 64px;
     background: white;
-    border: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     text-align: center;
-    font-size: 16px; /* 폰트 크기 축소 */
+    font-size: 16px;
     cursor: pointer;
     user-select: none;
     transition: background .15s;
@@ -106,30 +124,39 @@ td.disabled {
     cursor: default;
 }
 
-/* 선택 색 클래스 */
+/* ------------------------
+   범례 색상 적용 클래스
+-------------------------*/
 td.otp    { background: var(--otp) !important; }
 td.good   { background: var(--good) !important; }
 td.normal { background: var(--normal) !important; }
 td.pass   { background: var(--pass) !important; }
 td.mine   { background: var(--mine) !important; }
 
-/* 기기존 개별 설정 하단 혹은 적당한 위치에 추가 */
-.legend-add-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* [중요] 추가된 커스텀 범례들이 스타일 변수를 동적으로 추적하여 배경색을 주입받도록 처리 */
-td[class*="custom_"] {
-    background: var(--data-color, white) !important;
-}
-
-/* JavaScript에서 매칭하기 수월하도록 동적 생성 클래스 지원 */
+/* 팝업창(Picker) 내부 동적 범례 버튼 스타일 매칭 */
 .pick {
-    background: var(--bg-color, #ccc);
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .15s;
 }
 
+/* 기본 범례 팝업 색상 */
+.pick.otp    { background: var(--otp); }
+.pick.good   { background: var(--good); }
+.pick.normal { background: var(--normal); }
+.pick.pass   { background: var(--pass); }
+.pick.mine   { background: var(--mine); }
+
+/* 자바스크립트에서 등록한 `--custom_...` 변수명을 실시간으로 찾아 표와 팝업 버튼에 주입 */
+td[class*="custom_"] {
+    background: var(--custom-color, #e0e0e0) !important;
+}
+.pick[class*="custom_"] {
+    background: var(--custom-color, #e0e0e0);
+}
 
 /* ------------------------
    팝업 (Picker)
@@ -145,24 +172,9 @@ td[class*="custom_"] {
     z-index: 999;
 }
 
-.pick {
-    width: 28px; /* 픽커 크기 아담하게 축소 */
-    height: 28px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: .15s;
-}
-
 .pick:hover {
     transform: scale(1.15);
 }
-
-.pick.otp    { background: var(--otp); }
-.pick.good   { background: var(--good); }
-.pick.normal { background: var(--normal); }
-.pick.pass   { background: var(--pass); }
-.pick.mine   { background: var(--mine); }
 
 .pick.clear {
     background: white;
@@ -182,7 +194,7 @@ td[class*="custom_"] {
 }
 
 /* ------------------------
-   모바일 반응형 (테두리 어긋남 완전 해결)
+   모바일 반응형
 -------------------------*/
 @media(max-width: 900px) {
     body {
@@ -193,7 +205,6 @@ td[class*="custom_"] {
         font-size: 22px;
     }
 
-    /* 겉 박스와 내부 표가 무조건 100% 동일하게 일치하도록 강제 결합 */
     .table-wrapper {
         width: 100% !important;
         display: block !important; 
@@ -202,14 +213,19 @@ td[class*="custom_"] {
 
     table {
         width: 100% !important;
-        table-layout: fixed !important; /* 6개 열이 화면 비율에 맞춰 쪼개지도록 설정 */
+        table-layout: fixed !important;
+        border-collapse: separate !important; /* 모바일에서도 separate 유지 */
     }
 
     th, td {
-        width: calc(100% / 6) !important; /* 화면 가로폭을 정확히 6등분하여 채움 */
-        height: 48px !important; /* 모바일 전용 아담한 높이 */
-        font-size: 13px !important; /* 모바일용 가독성 좋은 크기 */
-        border: 1px solid var(--border) !important;
+        width: calc(100% / 6) !important;
+        height: 48px !important;
+        font-size: 13px !important;
+        /* 중복 테두리가 두꺼워지지 않도록 우측/하단만 제어 */
+        border-right: 1px solid var(--border) !important;
+        border-bottom: 1px solid var(--border) !important;
+        border-left: none !important;
+        border-top: none !important;
     }
 
     td:hover {
